@@ -1,4 +1,14 @@
-all: th
+CC=gcc
+CFLAGS=-Wall -Wextra
+
+
+all: th omp
+
+omp: omp.c
+	$(CC) $(CFLAGS) -fopenmp $^ -o $@ 
 
 th: th.c
-	gcc $^ -o $@ -lpthread
+	$(CC) $(CFLAGS) $^ -o $@ -lpthread
+
+clean:
+	rm -f ./th ./omp
