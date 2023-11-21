@@ -13,6 +13,7 @@ struct string_s
 typedef struct string_s string;
 
 string* str_create(const char * str);
+void str_print(string*s1);
 void str_destroy(string* s1);
 void str_copy(string* s1, const string* s2);
 int str_compare(const string* s1, const string* s2);
