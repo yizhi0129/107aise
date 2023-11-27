@@ -20,7 +20,7 @@ int main(int argc, char ** argv ) {
 		close(pp[0]);
 		close(pp[1]);
 		/* Run command */
-		char * argv1[] = {"echo","Salut\n Tout Le Monde ", NULL};
+		char * argv1[] = {"echo","Salut Tout Le Monde ", NULL};
 		execvp( argv1[0], argv1);
 	}
 	else {
