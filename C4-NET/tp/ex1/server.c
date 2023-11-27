@@ -30,7 +30,7 @@ int safe_write(int fd, char *buff, size_t size) {
 void *handle_client(void *psocket) {
   int client_fd = *((int *)psocket);
 
-  FILE *in = fopen("./starwars.txt", "r");
+  FILE *in = fopen("./secret.txt", "r");
 
   if (!in) {
     perror("fopen");
@@ -46,7 +46,7 @@ void *handle_client(void *psocket) {
     }
 
     if (strstr(buff, "\033[H")) {
-      usleep(70000);
+      usleep(41666);
     }
   }
 
