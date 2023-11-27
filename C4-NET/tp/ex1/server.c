@@ -23,12 +23,14 @@ int safe_write(int fd, char *buff, size_t size) {
 
     written += ret;
   }
+  
+  return 0;
 }
 
 void *handle_client(void *psocket) {
   int client_fd = *((int *)psocket);
 
-  FILE *in = fopen("./starwars.txt", "e");
+  FILE *in = fopen("./starwars.txt", "r");
 
   if (!in) {
     perror("fopen");
@@ -48,7 +50,7 @@ void *handle_client(void *psocket) {
     }
   }
 
-  fclose(in);
+  (void)fclose(in);
   close(client_fd);
 
   return NULL;
@@ -56,7 +58,7 @@ void *handle_client(void *psocket) {
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    fprintf(stderr, "Usage %s [PORT]\n", argv[0]);
+    (void)fprintf(stderr, "Usage %s [PORT]\n", argv[0]);
     exit(1);
   }
 
@@ -99,16 +101,17 @@ int main(int argc, char **argv) {
 
     /* All OK */
     success = 1;
+    break;
   }
 
   if (!success) {
-    fprintf(stderr, "Failed to create server");
+    (void)fprintf(stderr, "Failed to create server");
     exit(1);
   }
 
   while (1) {
     struct sockaddr addr;
-    socklen_t len;
+    socklen_t len = sizeof(struct sockaddr);
     int ret = accept(sock, &addr, &len);
 
     if (ret < 0) {
@@ -126,7 +129,7 @@ int main(int argc, char **argv) {
 
     *sockfd = ret;
 
-    pthread_t th;
+    pthread_t th = 0;
     pthread_create(&th, NULL, handle_client, sockfd);
   }
 
