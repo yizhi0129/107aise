@@ -10,7 +10,7 @@ int main( int argc, char **argv )
 	struct addrinfo *res = NULL;
 	struct addrinfo hints;
 	memset( &hints, 0, sizeof( hints ) );
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	int ret = getaddrinfo( argv[1], argv[2],
 	                       &hints,
@@ -40,7 +40,7 @@ int main( int argc, char **argv )
 		{
 			struct sockaddr_in *saddr = ( struct sockaddr_in * )tmp->ai_addr;
 			inet_ntop( AF_INET, &saddr->sin_addr, ip, sizeof( ip ) );
-			printf( "IPV4 : %s\n", ip );
+			printf( "IPV4 : %s %d %d %d\n", ip, tmp->ai_family, tmp->ai_socktype, tmp->ai_protocol );
 		}
 		else if ( tmp->ai_family == AF_INET6 )
 		{

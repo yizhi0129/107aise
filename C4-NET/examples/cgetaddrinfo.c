@@ -30,7 +30,8 @@ int main(int argc, char const *argv[])
     struct addrinfo *tmp;
     for(tmp = result; tmp != NULL; tmp=tmp->ai_next)
     {
-        sock = socket(tmp->ai_family, tmp->ai_socktype, tmp->ai_protocol);
+
+	sock = socket(tmp->ai_family, tmp->ai_socktype, tmp->ai_protocol);
 
         if(sock < 0)
         {
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[])
 
         if( connect(sock, tmp->ai_addr, tmp->ai_addrlen) < 0)
         {
-            perror("connect");
+            //perror("connect");
             continue;
         }
 
