@@ -16,7 +16,9 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	int sock = socket(AF_INET, SOCK_STREAM, 0); 
+	//a system call that creates an endpoint for communication and returns a socket descriptor : an intiger identifier
+	//int socket(int domain, int type, int protocol);
 
 	if(sock < 0)
 	{
@@ -25,13 +27,22 @@ int main(int argc, char **argv)
 	}
 
 	struct sockaddr_in server;
-	memset(&server, 0, sizeof(struct sockaddr_in));
-	server.sin_family = host->h_addrtype;
-	server.sin_port = htons(atoi(argv[2]));
+	memset(&server, 0, sizeof(struct sockaddr_in)); //set the memory of the server structure to zero
+	server.sin_family = host->h_addrtype; //The h_addrtype field indicates the address family
+	server.sin_port = htons(atoi(argv[2])); 
+	//atoi() : Converts the port number provided as a command-line argument (argv[2]) from a string to an integer.
+	//htons() : Converts the integer port number to network byte order (big-endian)
+
+	//to bind a socket to a specific address and port
 
 	memcpy(&server.sin_addr, host->h_addr_list[0], host->h_length);
+	// where to copy, what to copy, how much to copy (bytes)
 
 	int ret = connect(sock, (struct sockaddr*)&server, sizeof(struct sockaddr_in));
+	//connect() : initiate a connection on a socket
+	//sock : endpoint of communication
+	// pointer that contains the address and port information of the server
+	//size of the socket address structure
 
 	if( ret < 0)
 	{
