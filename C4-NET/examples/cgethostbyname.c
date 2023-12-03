@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 	// pointer that contains the address and port information of the server
 	//size of the socket address structure
 
-	if( ret < 0)
+	if( ret < 0) //connect atempt unsuccessful
 	{
 		perror("connect");
 		return 0;
@@ -52,13 +52,14 @@ int main(int argc, char **argv)
 
 	char toto[128];
 
-	snprintf(toto, 128, "COUCOU TOI\n");
+	snprintf(toto, 128, "COUCOU TOI\n"); 
+	//This function ensures that the string is truncated if it exceeds the specified size (128 in this case).
 
 	write(sock, toto, strlen(toto));
 
 	while((ret = read(sock, toto, 128)) != 0)
 	{
-		write(STDOUT_FILENO, toto, ret);
+		write(STDOUT_FILENO, toto, ret); //loop terminates when read() returns 0
 	}
 
 	close(sock);

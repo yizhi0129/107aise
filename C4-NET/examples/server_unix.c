@@ -1,11 +1,11 @@
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <netdb.h>
-#include <arpa/inet.h>
+#include <sys/types.h> // includes a number of basic data types used in system calls, such as pid_t and size_t
+#include <sys/socket.h> //for socket-related functions and data structures: socket creation, binding, and communication.
+#include <sys/un.h> //Unix domain sockets
+#include <netdb.h> //network database operations: host and service lookups
+#include <arpa/inet.h> //manipulation of Internet addresses (IPv4 and IPv6), conversions between numeric and text representations of addresses
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <unistd.h> // symbolic constants, types, system calls and process management: fork, exec, pipe
 
 int main( int argc, char **argv )
 {
