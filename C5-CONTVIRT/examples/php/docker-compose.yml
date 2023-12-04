@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+   myredis:
+     image: redis
+     ports:
+       - "63790:6379"
+   pythonclient:
+    depends_on:
+      - myredis
+    image: python-redis
+    volumes:
+      - ./python_dir/:/scripts/
+   web:
+     depends_on:
+       - myredis
+     image: php-redis
+     ports:
+       - "8080:80"
+     volumes:
+             - ./php_dir/:/var/www/html/
