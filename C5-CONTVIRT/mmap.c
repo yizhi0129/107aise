@@ -6,6 +6,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <pthread.h>
+
+struct proj
+{
+	pthread_spinlock_t lock;
+	int data[100];
+};
 
 
 int main(int argc, char ** argv)
@@ -21,9 +28,9 @@ int main(int argc, char ** argv)
 	ftruncate(fd, 1024*1024*100);
 
 
-	void * addr = mmap(NULL, 1024*1024*100, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	struct proj * p = (struct proj*) mmap(NULL, 1024*1024*100, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
-	if(addr == NULL)
+	if(p == NULL)
 	{
 		perror("mmap");
 		return 1;
@@ -31,18 +38,20 @@ int main(int argc, char ** argv)
 
 	unlink("./shmfile");
 
+	pthread_spin_init(&p->lock, PTHREAD_PROCESS_SHARED); 
+
 	pid_t c = fork();
 
 	if(c==0)
 	{
 		int i;
 
-		while(i < 10000)
+		while(1)
 		{
-			int * pi = (int *)addr;
 			i++;
-			*pi = i;
-			sleep(1);
+			pthread_spin_lock(&p->lock);
+			p->data[0] = i;
+			pthread_spin_unlock(&p->lock);
 		}
 
 	}
@@ -50,13 +59,13 @@ int main(int argc, char ** argv)
 	{
 		while(1)
 		{
-			int *pi = (int*)addr;
-			printf("%d\n", *pi);
-			sleep(1);
+			pthread_spin_lock(&p->lock);
+			printf("%d\n", p->data[0]);
+			pthread_spin_unlock(&p->lock);
 		}
 
 		wait(NULL);
-		munmap(addr, 1024*1024*100);
+		munmap(p, 1024*1024*100);
 	}
 
 
