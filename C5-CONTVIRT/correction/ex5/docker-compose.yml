@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+   leredis:
+     image: redis
+     ports:
+       - "6380:6379"
+   pythonclientlol:
+    depends_on:
+      - leredis
+    image: python-redis
+    volumes:
+      - ./python_dir/:/scripts/
+   web:
+     depends_on:
+       - leredis
+     image: php-redis
+     ports:
+       - "8080:80"
+     volumes:
+             - ./php_dir/:/var/www/html/
