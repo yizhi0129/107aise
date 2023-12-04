@@ -3,6 +3,10 @@
 
 int main(int argc, char ** argv)
 {
-	printf("COUCOU !\n");
+
+	int * pint = NULL;
+
+	*pint = 10;
+
 	return 0;
 }
